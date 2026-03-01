@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -78,5 +79,17 @@ public class ProductController {
         model.addAttribute("keyword", keyword);
 
         return "product/list";  // reuse template yang sama!
+    }
+
+    // GET /products/categories → Tampilkan ringkasan kategori (Tugas B)
+    @GetMapping("/categories")
+    public String categorySummary(Model model) {
+        // Ambil data Map berisi <Nama Kategori, Jumlah Produk>
+        Map<String, Integer> categoryStats = productService.getProductCountByCategory();
+
+        model.addAttribute("categoryStats", categoryStats);
+        model.addAttribute("title", "Ringkasan Kategori");
+
+        return "product/categories"; // → akan mencari file templates/product/categories.html
     }
 }
