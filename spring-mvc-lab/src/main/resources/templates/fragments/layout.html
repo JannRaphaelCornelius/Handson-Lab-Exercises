@@ -1,25 +1,157 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<!-- Fragment: Navbar -->
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" th:href="@{/}">Spring MVC Lab</a>
-        <div class="navbar-nav">
-            <a class="nav-link" th:href="@{/}">Home</a>
-            <a class="nav-link" th:href="@{/products}">Produk</a>
-            <a class="nav-link" th:href="@{/about}">About</a>
-            <a class="nav-link" th:href="@{/products/categories}">Kategori</a>
-            <a class="nav-link" th:href="@{/statistics}">Statistik</a>
+<!-- ═══════════════ FRAGMENT: head-common ═══════════════ -->
+<th:block th:fragment="head-common">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                serif:  ['"Playfair Display"', 'serif'],
+                sans:   ['Outfit', 'sans-serif'],
+                mono:   ['"JetBrains Mono"', 'monospace'],
+              },
+              colors: {
+                gold:    '#C9A84C',
+                'gold-light': '#F0D080',
+                'gold-dark':  '#A07830',
+                ink:     '#0C0C0E',
+                panel:   '#141416',
+                border:  '#1E1C18',
+                muted:   '#4A4438',
+                dim:     '#8A8070',
+                cream:   '#E8E0D0',
+              },
+              keyframes: {
+                fadeUp: {
+                  '0%':   { opacity: '0', transform: 'translateY(14px)' },
+                  '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                marquee: {
+                  '0%':   { transform: 'translateX(0)' },
+                  '100%': { transform: 'translateX(-50%)' },
+                },
+                shimmer: {
+                  '0%,100%': { backgroundPosition: '0% 50%' },
+                  '50%':     { backgroundPosition: '100% 50%' },
+                },
+              },
+              animation: {
+                'fade-up':  'fadeUp .45s ease both',
+                'fade-up-2':'fadeUp .45s .1s ease both',
+                'fade-up-3':'fadeUp .45s .2s ease both',
+                'fade-up-4':'fadeUp .45s .3s ease both',
+                'marquee':  'marquee 28s linear infinite',
+                'shimmer':  'shimmer 3s ease infinite',
+              },
+            }
+          }
+        }
+    </script>
+    <style>
+        body { background-color: #0C0C0E; }
+        .gold-text {
+          background: linear-gradient(90deg, #C9A84C, #F0D080, #C9A84C);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: shimmer 3s ease infinite;
+        }
+        .card-hover {
+          transition: border-color .25s, transform .25s, box-shadow .25s;
+        }
+        .card-hover:hover {
+          border-color: #C9A84C !important;
+          transform: translateY(-4px);
+          box-shadow: 0 12px 40px rgba(201,168,76,.12);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0C0C0E; }
+        ::-webkit-scrollbar-thumb { background: #C9A84C; border-radius: 2px; }
+    </style>
+</th:block>
+
+<!-- ═══════════════ FRAGMENT: navbar ═══════════════ -->
+a<nav th:fragment="navbar"
+     class="sticky top-0 z-50 bg-ink/95 backdrop-blur border-b border-border">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+
+        <!-- Brand -->
+        <a th:href="@{/}" class="flex items-center gap-2.5 group">
+            <div class="w-8 h-8 bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center">
+                <span class="font-serif font-black text-sm text-ink">S</span>
+            </div>
+            <span class="font-serif font-bold text-lg text-cream tracking-tight">
+        Spring<span class="text-gold">Shop</span>
+      </span>
+        </a>
+
+        <!-- Desktop nav -->
+        <div class="hidden md:flex items-center gap-1">
+            <a th:href="@{/}"
+               class="px-4 py-2 text-xs font-semibold tracking-widest uppercase text-dim hover:text-cream transition-colors font-mono">
+                Home
+            </a>
+            <a th:href="@{/products}"
+               class="px-4 py-2 text-xs font-semibold tracking-widest uppercase text-dim hover:text-cream transition-colors font-mono">
+                Produk
+            </a>
+            <a th:href="@{/about}"
+               class="ml-2 px-4 py-2 bg-gold text-ink text-xs font-bold tracking-widest uppercase hover:bg-gold-light transition-colors font-mono">
+                About
+            </a>
+            <a th:href="@{/products/categories}"
+               class="px-4 py-2 text-xs font-semibold tracking-widest uppercase text-dim hover:text-cream transition-colors font-mono">
+                Kategori
+            </a>
+            <a th:href="@{/statistics}"
+               class="px-4 py-2 text-xs font-semibold tracking-widest uppercase text-dim hover:text-cream transition-colors font-mono">
+                Statistik
+            </a>
         </div>
+
+        <!-- Mobile toggle -->
+        <button id="nav-toggle"
+                class="md:hidden p-2 border border-border text-dim hover:text-cream">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
     </div>
+
+    <!-- Mobile menu -->
+    <div id="nav-menu" class="hidden md:hidden border-t border-border bg-panel px-6 py-4 space-y-1">
+        <a th:href="@{/}" class="block py-2 text-xs font-mono font-bold uppercase tracking-widest text-dim hover:text-gold transition-colors">Home</a>
+        <a th:href="@{/products}" class="block py-2 text-xs font-mono font-bold uppercase tracking-widest text-dim hover:text-gold transition-colors">Produk</a>
+        <a th:href="@{/about}" class="block py-2 text-xs font-mono font-bold uppercase tracking-widest text-gold">About</a>
+        <a th:href="@{/products/categories}" class="block py-2 text-xs font-mono font-bold uppercase tracking-widest text-dim hover:text-gold transition-colors">Kategori</a>
+        <a th:href="@{/statistics}" class="block py-2 text-xs font-mono font-bold uppercase tracking-widest text-dim hover:text-gold transition-colors">Statistik</a>
+
+    </div>
+    <script>
+        document.getElementById('nav-toggle')?.addEventListener('click', () => {
+          document.getElementById('nav-menu')?.classList.toggle('hidden');
+        });
+    </script>
 </nav>
 
-<!-- Fragment: Footer -->
-<footer th:fragment="footer" class="bg-light text-center py-3 mt-5">
-    <div class="container">
-        <p class="text-muted mb-0">
-            Spring MVC Lab &copy; 2026 | WEB-202 Week 4
+<!-- ═══════════════ FRAGMENT: footer ═══════════════ -->
+<footer th:fragment="footer" class="mt-24 border-t border-border bg-ink">
+    <div class="max-w-7xl mx-auto px-6 py-9 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div>
+            <p class="font-serif font-bold text-xl text-cream">Spring<span class="text-gold">Shop</span></p>
+            <p class="font-mono text-xs text-muted mt-1">Web Programming 2 · Week 4 · Spring MVC Lab</p>
+        </div>
+    </div>
+    <div class="border-t border-border">
+        <p class="text-center font-mono text-xs text-muted/50 py-4">
+            Spring MVC Lab © 2026 — Spring Boot + Thymeleaf + <span class="text-gold">Tailwind CSS</span>
         </p>
     </div>
 </footer>

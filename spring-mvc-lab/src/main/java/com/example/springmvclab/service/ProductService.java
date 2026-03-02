@@ -15,13 +15,31 @@ public class ProductService {
     private final List<Product> products = new ArrayList<>();
 
     public ProductService() {
-        // Data dummy — nanti akan diganti database di Week JPA
-        products.add(new Product(1L, "Laptop ASUS", "Elektronik", 12_500_000, 15));
-        products.add(new Product(2L, "Mouse Logitech", "Elektronik", 350_000, 50));
-        products.add(new Product(3L, "Buku Java Programming", "Buku", 150_000, 30));
-        products.add(new Product(4L, "Kopi Arabica 250g", "Makanan", 85_000, 100));
-        products.add(new Product(5L, "Headphone Sony", "Elektronik", 1_200_000, 20));
-        products.add(new Product(6L, "Novel Laskar Pelangi", "Buku", 75_000, 45));
+        // ── Elektronik ──────────────────────────────────────────
+        products.add(new Product(1L,  "Laptop ASUS VivoBook 15",   "Elektronik",  12_500_000, 15));
+        products.add(new Product(2L,  "Mouse Logitech MX Master 3","Elektronik",     650_000, 50));
+        products.add(new Product(3L,  "Headphone Sony WH-1000XM5", "Elektronik",   3_200_000, 12));
+        products.add(new Product(4L,  "Keyboard Mechanical Keychron K2", "Elektronik", 1_150_000, 25));
+
+        // ── Buku ────────────────────────────────────────────────
+        products.add(new Product(5L,  "Buku Java Programming",     "Buku",           150_000, 30));
+        products.add(new Product(6L,  "Novel Laskar Pelangi",       "Buku",            75_000, 45));
+        products.add(new Product(7L,  "Clean Code - Robert Martin", "Buku",           220_000, 20));
+        products.add(new Product(8L,  "Atomic Habits",              "Buku",           130_000, 60));
+
+        // ── Makanan ─────────────────────────────────────────────
+        products.add(new Product(9L,  "Kopi Arabica 250g",          "Makanan",         85_000, 100));
+        products.add(new Product(10L, "Teh Hijau Organik 100g",     "Makanan",         55_000,  80));
+
+        // ── Lifestyle ───────────────────────────────────────────
+        products.add(new Product(11L, "Tote Bag Canvas Premium",    "Lifestyle",      120_000,  40));
+        products.add(new Product(12L, "Jam Tangan Casio Vintage",   "Lifestyle",      450_000,  18));
+        products.add(new Product(13L, "Tumbler Stainless 500ml",    "Lifestyle",       95_000,  55));
+
+        // ── Home & Living ────────────────────────────────────────
+        products.add(new Product(14L, "Lampu LED Aesthetic Warm",   "Home&Living",     75_000,  70));
+        products.add(new Product(15L, "Diffuser Aroma Terapi",      "Home&Living",    210_000,  30));
+        products.add(new Product(16L, "Pot Tanaman Minimalis",      "Home&Living",     65_000,  90));
     }
 
     public List<Product> findAll() {
