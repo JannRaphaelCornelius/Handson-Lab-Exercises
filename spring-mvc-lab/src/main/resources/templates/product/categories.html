@@ -1,116 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title th:text="${title}">Kategori Produk</title>
-    <th:block th:replace="~{fragments/layout :: head-common}"></th:block>
-</head>
-<body class="bg-ink text-cream font-sans antialiased">
+<head th:replace="~{fragments/layout :: head-content}"></head>
+<body class="bg-slate-50 flex flex-col min-h-screen">
 
 <div th:replace="~{fragments/layout :: navbar}"></div>
 
-<main class="max-w-7xl mx-auto px-6 py-12">
+<main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-slate-900 mb-2" th:text="${title}">Ringkasan Kategori</h1>
+        <p class="text-slate-500 mb-8">Jelajahi produk kami berdasarkan kategori.</p>
 
-    <!-- PAGE HEADER -->
-    <div class="border-b border-border pb-8 mb-12 animate-fade-up">
-        <p class="font-mono text-xs text-gold font-bold tracking-[.2em] uppercase mb-2">// Direktori</p>
-        <h1 class="font-serif font-black text-cream" style="font-size:clamp(2rem,5vw,3.5rem)"
-            th:text="${title}">Ringkasan Kategori</h1>
-        <p class="font-mono text-sm text-muted mt-3">Telusuri produk berdasarkan kategori yang tersedia.</p>
-    </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div th:each="entry : ${categoryStats}" class="group">
+                <a th:href="@{/products/category/{nama}(nama=${entry.key})}"
+                   class="block bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:border-emerald-500 hover:shadow-md transition duration-200 relative overflow-hidden">
 
-    <!-- CATEGORY BIG CARDS -->
-    <div class="grid md:grid-cols-3 gap-1 mb-12 animate-fade-up-2">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 rounded-full bg-slate-50 group-hover:bg-emerald-50 transition-colors duration-200"></div>
 
-        <a th:each="entry : ${categoryStats}"
-           th:href="@{/products/category/{nama}(nama=${entry.key})}"
-           class="card-hover group block bg-panel border border-border relative overflow-hidden p-10">
-
-            <!-- Top accent -->
-            <div th:if="${entry.key == 'Elektronik'}"
-                 class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-gold to-transparent"></div>
-            <div th:if="${entry.key == 'Buku'}"
-                 class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-transparent"></div>
-            <div th:if="${entry.key == 'Makanan'}"
-                 class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-green-500 to-transparent"></div>
-            <div th:if="${entry.key == 'Lifestyle'}"
-                 class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-transparent"></div>
-            <div th:if="${entry.key == 'Home&Living'}"
-                 class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-400 to-transparent"></div>
-
-            <!-- Ghost number background -->
-            <span class="absolute bottom-4 right-4 font-serif font-black text-8xl leading-none select-none text-border group-hover:text-border/60 transition-colors"
-                  th:text="${entry.value}">0</span>
-
-            <!-- Icon -->
-            <span class="text-5xl mb-5 block"
-                  th:text="${entry.key == 'Elektronik'} ? '⚡' :
-                            (${entry.key == 'Buku'} ? '📖' :
-                            (${entry.key == 'Makanan'} ? '☕' :
-                            (${entry.key == 'Lifestyle'} ? '✨' : '🏠')))">⚡</span>
-
-            <!-- Count badge -->
-            <p class="font-mono text-xs font-bold uppercase tracking-widest text-gold mb-3">
-                <span th:text="${entry.value}">0</span> Produk
-            </p>
-
-            <!-- Name -->
-            <h2 class="font-serif font-bold text-3xl text-cream mb-3" th:text="${entry.key}">Kategori</h2>
-
-            <p class="font-mono text-xs text-muted leading-relaxed mb-8">
-                <span th:text="${entry.key == 'Elektronik'} ? 'Gadget, perangkat komputer, dan aksesoris teknologi.' :
-                                (${entry.key == 'Buku'} ? 'Literatur teknis, novel, dan buku pengembangan diri.' :
-                                (${entry.key == 'Makanan'} ? 'Produk makanan dan minuman berkualitas premium.' :
-                                (${entry.key == 'Lifestyle'} ? 'Fashion, aksesoris, dan produk gaya hidup modern.' :
-                                'Dekorasi rumah, furnitur, dan perlengkapan hunian.')))">Deskripsi</span>
-            </p>
-
-            <div class="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-gold">
-                <span>Lihat Produk</span>
-                <span class="group-hover:translate-x-2 transition-transform">→</span>
-            </div>
-        </a>
-
-    </div>
-
-    <!-- SUMMARY TABLE -->
-    <div class="border border-border animate-fade-up-3 max-w-2xl">
-        <div class="bg-panel px-6 py-3 border-b border-border">
-            <p class="font-mono text-xs text-muted uppercase tracking-widest">// Ringkasan Distribusi</p>
-        </div>
-
-        <div th:each="entry, s : ${categoryStats}"
-             class="grid grid-cols-[1fr,auto] items-center"
-             th:classappend="${!s.last} ? 'border-b border-border' : ''">
-            <div class="px-6 py-5 flex items-center gap-4 border-r border-border">
-                <span class="text-xl"
-                      th:text="${entry.key == 'Elektronik'} ? '⚡' :
-                                (${entry.key == 'Buku'} ? '📖' :
-                                (${entry.key == 'Makanan'} ? '☕' :
-                                (${entry.key == 'Lifestyle'} ? '✨' : '🏠')))">⚡</span>
-                <span class="font-serif font-bold text-cream" th:text="${entry.key}">Kategori</span>
-                <!-- Progress bar -->
-                <div class="flex-1 h-1 bg-border rounded-full overflow-hidden">
-                    <div class="h-full rounded-full"
-                         th:classappend="${entry.key == 'Elektronik'} ? 'bg-gold' :
-                                         (${entry.key == 'Buku'} ? 'bg-blue-500' :
-                                         (${entry.key == 'Makanan'} ? 'bg-green-500' :
-                                         (${entry.key == 'Lifestyle'} ? 'bg-purple-500' : 'bg-orange-400')))"
-                         th:style="'width:' + (${entry.value} * 33) + '%'"></div>
-                </div>
-            </div>
-            <div class="px-6 py-5 text-right">
-                <span class="font-mono text-sm font-bold text-gold" th:text="${entry.value} + ' produk'">0 produk</span>
+                    <div class="relative z-10 flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800 group-hover:text-emerald-700 transition-colors" th:text="${entry.key}">Nama Kategori</h3>
+                            <p class="text-sm text-slate-500 mt-1">Lihat koleksi &rarr;</p>
+                        </div>
+                        <span class="text-2xl font-bold text-slate-300 group-hover:text-emerald-600 transition-colors"
+                              th:text="${entry.value}">0</span>
+                    </div>
+                </a>
             </div>
         </div>
-    </div>
 
-    <div class="mt-10">
-        <a th:href="@{/products}"
-           class="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest px-5 py-2.5 border border-border text-muted hover:border-gold hover:text-gold transition-colors">
-            ← Kembali ke Katalog
-        </a>
+        <div class="mt-8">
+            <a th:href="@{/products}" class="text-sm font-medium text-slate-500 hover:text-emerald-600 transition">
+                &larr; Kembali ke Daftar Produk
+            </a>
+        </div>
     </div>
-
 </main>
 
 <div th:replace="~{fragments/layout :: footer}"></div>
