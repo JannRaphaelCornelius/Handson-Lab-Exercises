@@ -1,157 +1,84 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title th:text="${title}">Detail Produk</title>
-    <th:block th:replace="~{fragments/layout :: head-common}"></th:block>
-</head>
-<body class="bg-ink text-cream font-sans antialiased">
+<head th:replace="~{fragments/layout :: head-content}"></head>
+<body class="bg-slate-50 flex flex-col min-h-screen">
 
 <div th:replace="~{fragments/layout :: navbar}"></div>
 
-<main class="max-w-7xl mx-auto px-6 py-12">
+<main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 mt-8">
 
-    <!-- BREADCRUMB -->
-    <nav class="flex items-center gap-2 font-mono text-xs text-muted mb-10 animate-fade-up">
-        <a th:href="@{/}" class="hover:text-gold transition-colors">Home</a>
-        <span>/</span>
-        <a th:href="@{/products}" class="hover:text-gold transition-colors">Katalog</a>
-        <span>/</span>
-        <span class="text-cream" th:text="${product != null ? product.name : 'Tidak Ditemukan'}">Nama</span>
-    </nav>
+    <div th:if="${product != null}" class="max-w-3xl mx-auto">
 
-    <!-- ─── PRODUK DITEMUKAN ─── -->
-    <div th:if="${product != null}">
-        <div class="grid md:grid-cols-2 gap-12 items-start">
+        <nav class="flex mb-6 text-sm text-slate-500" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+                <li><a th:href="@{/}" class="hover:text-emerald-600 transition">Home</a></li>
+                <li><span class="text-slate-300">/</span></li>
+                <li><a th:href="@{/products}" class="hover:text-emerald-600 transition">Produk</a></li>
+                <li><span class="text-slate-300">/</span></li>
+                <li class="text-emerald-600 font-medium" th:text="${product.name}">Nama</li>
+            </ol>
+        </nav>
 
-            <!-- LEFT: Visual block -->
-            <div class="animate-fade-up">
-
-                <!-- Big product display -->
-                <div class="bg-panel border border-border relative overflow-hidden mb-5">
-                    <!-- top accent line based on category -->
-                    <div th:if="${product.category == 'Elektronik'}"
-                         class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-gold to-gold-dark"></div>
-                    <div th:if="${product.category == 'Buku'}"
-                         class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-700"></div>
-                    <div th:if="${product.category == 'Makanan'}"
-                         class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-green-500 to-green-700"></div>
-
-                    <div class="flex flex-col items-center justify-center py-16 px-10">
-            <span class="text-7xl mb-6"
-                  th:text="${product.category == 'Elektronik'} ? '⚡' : (${product.category == 'Buku'} ? '📖' : '☕')">⚡</span>
-                        <span class="font-mono text-xs font-bold uppercase tracking-widest px-3 py-1 border text-gold border-gold/40"
-                              th:text="${product.category}">Kategori</span>
-                    </div>
-
-                    <p class="absolute bottom-4 right-4 font-mono text-xs text-border"
-                       th:text="'ID #' + ${product.id}">ID #1</p>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <h1 class="text-3xl font-bold text-slate-900" th:text="${product.name}">Nama Produk</h1>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                          th:classappend="${product.stock < 20 ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-emerald-50 text-emerald-700 border border-emerald-100'}">
+                            <span th:if="${product.stock < 20}">Stok Menipis</span>
+                            <span th:if="${product.stock >= 20}">Tersedia</span>
+                        </span>
                 </div>
 
-                <!-- Description -->
-                <div class="bg-panel border border-border p-6">
-                    <p class="font-mono text-xs text-muted uppercase tracking-widest mb-3">Deskripsi</p>
-                    <p class="text-dim leading-relaxed text-sm font-light">
-                        Produk <span class="text-cream font-medium" th:text="${product.name}">nama</span>
-                        dari kategori <span class="text-gold" th:text="${product.category}">kategori</span>.
-                    </p>
+                <div class="border-t border-slate-100">
+                    <dl class="divide-y divide-slate-100">
+                        <div class="py-4 grid grid-cols-3 gap-4">
+                            <dt class="text-sm font-medium text-slate-500">ID Produk</dt>
+                            <dd class="text-sm text-slate-900 col-span-2 font-mono" th:text="${product.id}">1</dd>
+                        </div>
+                        <div class="py-4 grid grid-cols-3 gap-4">
+                            <dt class="text-sm font-medium text-slate-500">Kategori</dt>
+                            <dd class="text-sm text-slate-900 col-span-2">
+                                <a th:href="@{/products/category/{cat}(cat=${product.category})}"
+                                   th:text="${product.category}"
+                                   class="text-emerald-600 hover:text-emerald-800 font-medium hover:underline decoration-emerald-300 underline-offset-2">Kategori</a>
+                            </dd>
+                        </div>
+                        <div class="py-4 grid grid-cols-3 gap-4">
+                            <dt class="text-sm font-medium text-slate-500">Harga Satuan</dt>
+                            <dd class="text-xl font-semibold text-slate-900 col-span-2"
+                                th:text="'Rp ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</dd>
+                        </div>
+                        <div class="py-4 grid grid-cols-3 gap-4">
+                            <dt class="text-sm font-medium text-slate-500">Stok Tersedia</dt>
+                            <dd class="text-sm text-slate-900 col-span-2" th:text="${product.stock}">0</dd>
+                        </div>
+                    </dl>
                 </div>
             </div>
-
-            <!-- RIGHT: Info -->
-            <div class="animate-fade-up-2">
-                <p class="font-mono text-xs text-muted uppercase tracking-widest mb-3">
-                    <span th:text="${product.category}">Kategori</span> · #<span th:text="${product.id}">1</span>
-                </p>
-
-                <h1 class="font-serif font-black text-cream leading-tight mb-8"
-                    style="font-size:clamp(1.8rem,4vw,2.8rem)"
-                    th:text="${product.name}">Nama Produk</h1>
-
-                <!-- Price card -->
-                <div class="bg-panel border border-gold/30 p-6 mb-4">
-                    <p class="font-mono text-xs text-muted uppercase tracking-widest mb-2">Harga</p>
-                    <p class="font-serif font-black text-4xl text-gold"
-                       th:text="'Rp ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</p>
-                </div>
-
-                <!-- Stock card -->
-                <div class="bg-panel border p-6 mb-6"
-                     th:classappend="${product.stock < 20} ? 'border-red-500/30' : 'border-green-500/20'">
-                    <p class="font-mono text-xs text-muted uppercase tracking-widest mb-3">Ketersediaan Stok</p>
-                    <div class="flex items-center gap-4">
-            <span class="font-serif font-black text-4xl"
-                  th:text="${product.stock}"
-                  th:classappend="${product.stock < 20} ? 'text-red-400' : 'text-green-400'">0</span>
-                        <div>
-              <span th:if="${product.stock < 20}"
-                    class="font-mono text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/25">
-                ⚠ Stok Menipis
-              </span>
-                            <span th:if="${product.stock >= 20}"
-                                  class="font-mono text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-green-500/10 text-green-400 border border-green-500/20">
-                ✓ Tersedia
-              </span>
-                            <p class="font-mono text-xs text-muted mt-1">unit tersisa</p>
-                        </div>
-                    </div>
-                    <!-- Stock progress bar -->
-                    <div class="mt-4 h-1 bg-border rounded-full overflow-hidden">
-                        <div class="h-full rounded-full transition-all duration-700"
-                             th:classappend="${product.stock < 20} ? 'bg-red-500' : 'bg-green-500'"
-                             th:style="'width:' + ${product.stock * 100 / 120} + '%'"></div>
-                    </div>
-                </div>
-
-                <!-- Data table -->
-                <div class="border border-border mb-8">
-                    <div th:each="row,i : ${ {{'ID Produk', product.id}, {'Nama', product.name}, {'Kategori', product.category}, {'Harga', 'Rp ' + #numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}, {'Stok', product.stock + ' unit'}} }"
-                         class="grid grid-cols-[130px,1fr] border-b border-border last:border-b-0">
-                        <!-- Note: in real Thymeleaf use individual fields below -->
-                    </div>
-
-                    <!-- Manual rows (more compatible) -->
-                    <div class="grid grid-cols-[130px,1fr] border-b border-border">
-                        <div class="p-3 bg-panel font-mono text-[10px] font-bold uppercase tracking-widest text-muted border-r border-border">ID Produk</div>
-                        <div class="p-3 font-mono text-sm text-cream" th:text="'#' + ${product.id}">-</div>
-                    </div>
-                    <div class="grid grid-cols-[130px,1fr] border-b border-border">
-                        <div class="p-3 bg-panel font-mono text-[10px] font-bold uppercase tracking-widest text-muted border-r border-border">Nama</div>
-                        <div class="p-3 font-serif text-sm font-bold text-cream" th:text="${product.name}">-</div>
-                    </div>
-                    <div class="grid grid-cols-[130px,1fr] border-b border-border">
-                        <div class="p-3 bg-panel font-mono text-[10px] font-bold uppercase tracking-widest text-muted border-r border-border">Kategori</div>
-                        <div class="p-3 font-mono text-sm text-gold font-bold" th:text="${product.category}">-</div>
-                    </div>
-                    <div class="grid grid-cols-[130px,1fr] border-b border-border">
-                        <div class="p-3 bg-panel font-mono text-[10px] font-bold uppercase tracking-widest text-muted border-r border-border">Harga</div>
-                        <div class="p-3 font-serif text-sm text-gold font-bold"
-                             th:text="'Rp ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">-</div>
-                    </div>
-                    <div class="grid grid-cols-[130px,1fr]">
-                        <div class="p-3 bg-panel font-mono text-[10px] font-bold uppercase tracking-widest text-muted border-r border-border">Stok</div>
-                        <div class="p-3 font-mono text-sm text-cream" th:text="${product.stock} + ' unit'">-</div>
-                    </div>
-                </div>
-
-                <a th:href="@{/products}"
-                   class="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest px-5 py-2.5 border border-border text-muted hover:border-gold hover:text-gold transition-colors">
-                    ← Kembali ke Katalog
-                </a>
+            <div class="bg-slate-50 px-8 py-4 border-t border-slate-200 flex justify-end">
+                <a th:href="@{/products}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Kembali ke Daftar</a>
             </div>
         </div>
     </div>
 
-    <!-- ─── PRODUK TIDAK DITEMUKAN ─── -->
-    <div th:if="${product == null}">
-        <div class="border border-red-500/30 bg-red-500/5 p-10 max-w-xl">
-            <p class="font-mono text-xs text-red-400 font-bold uppercase tracking-widest mb-3">// Error 404</p>
-            <h2 class="font-serif font-black text-4xl text-red-400 mb-3">Produk Tidak Ditemukan</h2>
-            <p class="font-mono text-sm text-red-400/70" th:text="${error}">Error message</p>
+    <div th:if="${product == null}" class="max-w-2xl mx-auto mt-10">
+        <div class="bg-white border-l-4 border-red-500 shadow-sm rounded-r-lg p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <svg class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg leading-6 font-medium text-slate-900">Produk Tidak Ditemukan</h3>
+                    <p class="mt-1 text-sm text-slate-500" th:text="${error}">Error message</p>
+                </div>
+            </div>
+            <div class="mt-4 pl-10">
+                <a th:href="@{/products}" class="text-sm font-medium text-red-600 hover:text-red-500">Kembali ke Daftar &rarr;</a>
+            </div>
         </div>
-        <a th:href="@{/products}"
-           class="inline-block mt-8 font-mono text-xs font-bold uppercase tracking-widest px-6 py-3 bg-gold text-ink hover:bg-gold-light transition-colors">
-            ← Kembali ke Katalog
-        </a>
     </div>
 
 </main>
