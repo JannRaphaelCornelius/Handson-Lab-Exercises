@@ -1,178 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="scroll-smooth">
-<head>
-    <title th:text="${title}">SpringShop</title>
-    <th:block th:replace="~{fragments/layout :: head-common}"></th:block>
-</head>
-<body class="bg-ink text-cream font-sans antialiased">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head-content}"></head>
+<body class="bg-slate-50 flex flex-col min-h-screen">
 
 <div th:replace="~{fragments/layout :: navbar}"></div>
 
-<!-- ═══ HERO ═══════════════════════════════════════════════════ -->
-<section class="max-w-7xl mx-auto px-6 pt-20 pb-16">
-    <div class="grid md:grid-cols-2 gap-16 items-center">
+<main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <div class="p-8 md:p-12 text-center md:text-left">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4" th:text="${title}">Title</h1>
+            <p class="text-lg text-slate-600 mb-8 max-w-2xl leading-relaxed" th:text="${description}">Description</p>
 
-        <!-- Left -->
-        <div>
-            <div class="flex items-center gap-3 mb-6 animate-fade-up">
-                <div class="h-px w-10 bg-gold"></div>
-                <span class="font-mono text-xs font-bold tracking-[.2em] uppercase text-muted">
-                    Spring MVC Lab — Web Programming 2
-                </span>
-            </div>
+            <hr class="border-slate-100 my-8">
 
-            <h1 class="font-serif font-black leading-[1.05] text-cream animate-fade-up-2"
-                style="font-size:clamp(3.2rem,8vw,5.5rem)">
-                Katalog<br>
-                <span class="gold-text">Produk</span><br>
-                <em class="font-serif font-normal not-italic text-dim"
-                    style="font-size:.7em;font-style:italic">Toko Digital</em>
-            </h1>
+            <h5 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Jelajahi Produk</h5>
 
-            <p class="mt-6 text-muted leading-relaxed max-w-md animate-fade-up-3 font-light">
-                Jelajahi koleksi produk pilihan — elektronik, buku, makanan, lifestyle, hingga perlengkapan rumah berkualitas. Dibangun dengan Spring Boot &amp; Thymeleaf.
-            </p>
-
-            <div class="flex flex-wrap gap-3 mt-10 animate-fade-up-4">
+            <div class="flex flex-wrap gap-3">
                 <a th:href="@{/products}"
-                   class="px-6 py-3 bg-gold text-ink font-bold text-xs tracking-widest uppercase hover:bg-gold-light transition-colors font-mono">
-                    Jelajahi Katalog →
+                   class="inline-flex items-center px-5 py-2.5 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700 transition shadow-sm hover:shadow-md">
+                    Semua Produk
                 </a>
-                <a th:href="@{/products/categories}"
-                   class="px-6 py-3 border border-border text-gold font-bold text-xs tracking-widest uppercase hover:bg-gold/10 transition-colors font-mono">
-                    Lihat Kategori
+                <a th:href="@{/products/category/Elektronik}"
+                   class="inline-flex items-center px-4 py-2 rounded-lg bg-white border border-slate-200 text-slate-700 font-medium hover:border-emerald-500 hover:text-emerald-600 transition">
+                    Elektronik
+                </a>
+                <a th:href="@{/products/category/Buku}"
+                   class="inline-flex items-center px-4 py-2 rounded-lg bg-white border border-slate-200 text-slate-700 font-medium hover:border-emerald-500 hover:text-emerald-600 transition">
+                    Buku
+                </a>
+                <a th:href="@{/products/category/Makanan}"
+                   class="inline-flex items-center px-4 py-2 rounded-lg bg-white border border-slate-200 text-slate-700 font-medium hover:border-emerald-500 hover:text-emerald-600 transition">
+                    Makanan
                 </a>
             </div>
         </div>
-
-        <!-- Right: stat tiles -->
-        <div class="hidden md:grid grid-cols-2 gap-2 animate-fade-up-3">
-            <div class="bg-panel border border-border p-8 flex flex-col items-center justify-center aspect-square">
-                <span class="gold-text font-serif font-black text-6xl"
-                      th:text="${totalProducts ?: '16'}">16</span>
-                <span class="font-mono text-xs text-muted mt-2 tracking-widest uppercase">Produk</span>
-            </div>
-            <div class="bg-gold p-8 flex flex-col items-center justify-center aspect-square">
-                <span class="font-serif font-black text-6xl text-ink">5</span>
-                <span class="font-mono text-xs text-ink/60 mt-2 tracking-widest uppercase">Kategori</span>
-            </div>
-        </div>
     </div>
-</section>
-
-<!-- ═══ MARQUEE TICKER ══════════════════════════════════════════ -->
-<div class="border-y border-border bg-panel overflow-hidden py-3">
-    <div class="flex gap-16 whitespace-nowrap animate-marquee">
-        <span th:each="item : ${ {'ELEKTRONIK','·','BUKU','·','MAKANAN','·','LIFESTYLE','·','HOME & LIVING','·','16 PRODUK','·','5 KATEGORI','·','SPRING BOOT','·','THYMELEAF','·','TAILWIND CSS','·','ELEKTRONIK','·','BUKU','·','MAKANAN','·','LIFESTYLE','·','HOME & LIVING','·','16 PRODUK','·','5 KATEGORI','·','SPRING BOOT','·','THYMELEAF','·','TAILWIND CSS','·'} }"
-              class="font-serif italic text-sm tracking-[.15em]"
-              th:classappend="${item == '·'} ? ' text-border' : ' text-muted'"
-              th:text="${item}">item</span>
-    </div>
-</div>
-
-<!-- ═══ CATEGORY QUICK ACCESS ═══════════════════════════════════ -->
-<section class="max-w-7xl mx-auto px-6 py-20">
-    <div class="flex items-end justify-between mb-10">
-        <div>
-            <p class="font-mono text-xs text-gold font-bold tracking-[.2em] uppercase mb-2">// Jelajahi</p>
-            <h2 class="font-serif font-bold text-cream" style="font-size:clamp(1.8rem,4vw,2.5rem)">Kategori Produk</h2>
-        </div>
-        <a th:href="@{/products}"
-           class="hidden md:block font-mono text-xs text-muted hover:text-gold transition-colors uppercase tracking-widest">
-            Lihat semua →
-        </a>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-4">
-
-        <!-- Elektronik -->
-        <a th:href="@{/products/category/Elektronik}"
-           class="card-hover group block bg-panel border border-border overflow-hidden">
-            <div class="h-1 bg-gradient-to-r from-gold to-gold-dark"></div>
-            <div class="p-8">
-                <span class="text-4xl mb-6 block">⚡</span>
-                <h3 class="font-serif font-bold text-2xl text-cream mb-2">Elektronik</h3>
-                <p class="font-mono text-xs text-muted leading-relaxed mb-8">
-                    Laptop, mouse, keyboard.
-                </p>
-                <div class="flex items-center gap-2 text-gold font-mono text-xs font-bold uppercase tracking-widest">
-                    <span>Browse</span>
-                    <span class="group-hover:translate-x-2 transition-transform">→</span>
-                </div>
-            </div>
-        </a>
-
-        <!-- Buku -->
-        <a th:href="@{/products/category/Buku}"
-           class="card-hover group block bg-gold overflow-hidden border border-gold">
-            <div class="h-1 bg-ink"></div>
-            <div class="p-8">
-                <span class="text-4xl mb-6 block">📖</span>
-                <h3 class="font-serif font-bold text-2xl text-ink mb-2">Buku</h3>
-                <p class="font-mono text-xs text-ink/70 leading-relaxed mb-8">
-                    Literatur pemrograman, novel.
-                </p>
-                <div class="flex items-center gap-2 text-ink font-mono text-xs font-bold uppercase tracking-widest">
-                    <span>Browse</span>
-                    <span class="group-hover:translate-x-2 transition-transform">→</span>
-                </div>
-            </div>
-        </a>
-
-        <!-- Makanan -->
-        <a th:href="@{/products/category/Makanan}"
-           class="card-hover group block bg-panel border border-border overflow-hidden">
-            <div class="h-1 bg-gradient-to-r from-green-600 to-green-400"></div>
-            <div class="p-8">
-                <span class="text-4xl mb-6 block">☕</span>
-                <h3 class="font-serif font-bold text-2xl text-cream mb-2">Makanan</h3>
-                <p class="font-mono text-xs text-muted leading-relaxed mb-8">
-                    Kopi arabica, teh hijau organik.
-                </p>
-                <div class="flex items-center gap-2 text-gold font-mono text-xs font-bold uppercase tracking-widest">
-                    <span>Browse</span>
-                    <span class="group-hover:translate-x-2 transition-transform">→</span>
-                </div>
-            </div>
-        </a>
-
-        <!-- Lifestyle -->
-        <a th:href="@{/products/category/Lifestyle}"
-           class="card-hover group block bg-panel border border-border overflow-hidden">
-            <div class="h-1 bg-gradient-to-r from-purple-500 to-purple-700"></div>
-            <div class="p-8">
-                <span class="text-4xl mb-6 block">✨</span>
-                <h3 class="font-serif font-bold text-2xl text-cream mb-2">Lifestyle</h3>
-                <p class="font-mono text-xs text-muted leading-relaxed mb-8">
-                    Fashion, aksesoris, tumbler, jam tangan.
-                </p>
-                <div class="flex items-center gap-2 text-gold font-mono text-xs font-bold uppercase tracking-widest">
-                    <span>Browse</span>
-                    <span class="group-hover:translate-x-2 transition-transform">→</span>
-                </div>
-            </div>
-        </a>
-
-        <!-- Home & Living -->
-        <a th:href="@{/products/category/Home&Living}"
-           class="card-hover group block bg-panel border border-border overflow-hidden">
-            <div class="h-1 bg-gradient-to-r from-orange-400 to-orange-600"></div>
-            <div class="p-8">
-                <span class="text-4xl mb-6 block">🏠</span>
-                <h3 class="font-serif font-bold text-2xl text-cream mb-2">Home &amp; Living</h3>
-                <p class="font-mono text-xs text-muted leading-relaxed mb-8">
-                    Dekorasi rumah, lampu aesthetic, diffuser aroma.
-                </p>
-                <div class="flex items-center gap-2 text-gold font-mono text-xs font-bold uppercase tracking-widest">
-                    <span>Browse</span>
-                    <span class="group-hover:translate-x-2 transition-transform">→</span>
-                </div>
-            </div>
-        </a>
-
-    </div>
-</section>
+</main>
 
 <div th:replace="~{fragments/layout :: footer}"></div>
+
 </body>
 </html>
