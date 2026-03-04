@@ -1,132 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title th:text="${title}">About</title>
-    <th:block th:replace="~{fragments/layout :: head-common}"></th:block>
-</head>
-<body class="bg-ink text-cream font-sans antialiased">
+<head th:replace="~{fragments/layout :: head-content}"></head>
+<body class="bg-slate-50 flex flex-col min-h-screen">
 
 <div th:replace="~{fragments/layout :: navbar}"></div>
 
-<main class="max-w-7xl mx-auto px-6 py-12">
-
-    <!-- PAGE HEADER -->
-    <div class="border-b border-border pb-8 mb-12 animate-fade-up">
-        <p class="font-mono text-xs text-gold font-bold tracking-[.2em] uppercase mb-2">// Tentang Aplikasi</p>
-        <h1 class="font-serif font-black text-cream" style="font-size:clamp(2rem,5vw,3.5rem)"
-            th:text="${appName}">Spring MVC Lab</h1>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-6">
-
-        <!-- Main Info — 2 cols -->
-        <div class="md:col-span-2 space-y-6">
-
-            <!-- App card -->
-            <div class="bg-panel border border-border p-8 animate-fade-up-2">
-                <div class="flex items-start justify-between mb-6">
-                    <div>
-                        <h2 class="font-serif font-bold text-3xl text-cream" th:text="${appName}">Spring MVC Lab</h2>
-                        <p class="font-mono text-xs text-muted mt-1">
-                            Version <span class="text-gold" th:text="${version}">1.0</span>
-                        </p>
-                    </div>
-                    <div class="w-14 h-14 bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center flex-shrink-0">
-                        <span class="font-serif font-black text-2xl text-ink">v<span th:text="${version}">1</span></span>
-                    </div>
-                </div>
-                <div class="h-px bg-border mb-5"></div>
-                <p class="font-light text-dim leading-relaxed text-sm">
-                    Proyek praktikum untuk memahami pola MVC (Model-View-Controller) menggunakan Spring Boot & Thymeleaf.
-                    Mendemonstrasikan penggunaan <code class="font-mono text-gold text-xs bg-border/60 px-1.5 py-0.5">@Controller</code>,
-                    <code class="font-mono text-gold text-xs bg-border/60 px-1.5 py-0.5">@GetMapping</code>,
-                    <code class="font-mono text-gold text-xs bg-border/60 px-1.5 py-0.5">@PathVariable</code>,
-                    dan <code class="font-mono text-gold text-xs bg-border/60 px-1.5 py-0.5">Model</code>.
-                </p>
+<main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                S
             </div>
-
-            <!-- Author -->
-            <div class="bg-panel border border-gold/30 p-8 animate-fade-up-3">
-                <p class="font-mono text-xs text-gold font-bold uppercase tracking-widest mb-5">// Dibuat oleh</p>
-                <div class="flex items-center gap-6">
-                    <div class="w-16 h-16 bg-gold/10 border border-gold/30 flex items-center justify-center flex-shrink-0">
-            <span class="font-serif font-black text-3xl text-gold"
-                  th:text="${#strings.substring(author, 0, 1)}">R</span>
-                    </div>
-                    <div>
-                        <h3 class="font-serif font-bold text-2xl text-cream" th:text="${author}">Author</h3>
-                        <p class="font-mono text-xs text-muted mt-1">Mahasiswa Teknik Informatika - UNAI</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Technologies -->
-            <div class="bg-panel border border-border p-8 animate-fade-up-4">
-                <p class="font-mono text-xs text-muted uppercase tracking-widest mb-6">// Teknologi yang Digunakan</p>
-                <div class="flex flex-wrap gap-3">
-          <span th:each="tech : ${technologies}"
-                class="font-mono text-xs font-bold uppercase tracking-widest px-4 py-2 border border-border text-dim hover:border-gold hover:text-gold transition-colors cursor-default"
-                th:text="${tech}">Tech</span>
-                </div>
-            </div>
-
+            <h1 class="text-2xl font-bold text-slate-900" th:text="${appName}">App Name</h1>
+            <p class="text-slate-500">Versi <span th:text="${version}">1.0</span></p>
         </div>
 
-        <!-- Sidebar -->
-        <div class="space-y-5">
+        <div class="border-t border-slate-100 py-6">
+            <p class="text-slate-700 text-center mb-6">Dibuat oleh <strong class="text-slate-900" th:text="${author}">Author</strong></p>
 
-            <!-- Navigation links -->
-            <div class="bg-panel border border-border p-6 animate-fade-up-2">
-                <p class="font-mono text-xs text-muted uppercase tracking-widest mb-5">// Navigasi</p>
-                <div class="space-y-1">
-                    <a th:href="@{/}"
-                       class="flex items-center justify-between py-2.5 border-b border-border font-mono text-xs font-bold uppercase tracking-widest text-dim hover:text-gold transition-colors group">
-                        <span>Home</span>
-                        <span class="group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                    <a th:href="@{/products}"
-                       class="flex items-center justify-between py-2.5 border-b border-border font-mono text-xs font-bold uppercase tracking-widest text-dim hover:text-gold transition-colors group">
-                        <span>Katalog Produk</span>
-                        <span class="group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                    <a th:href="@{/products/categories}"
-                       class="flex items-center justify-between py-2.5 border-b border-border font-mono text-xs font-bold uppercase tracking-widest text-dim hover:text-gold transition-colors group">
-                        <span>Kategori</span>
-                        <span class="group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                    <a th:href="@{/statistics}"
-                       class="flex items-center justify-between py-2.5 font-mono text-xs font-bold uppercase tracking-widest text-dim hover:text-gold transition-colors group">
-                        <span>Statistik</span>
-                        <span class="group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                </div>
+            <h5 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 text-center">Teknologi</h5>
+            <div class="flex flex-wrap justify-center gap-2">
+                    <span th:each="tech : ${technologies}"
+                          class="px-3 py-1 rounded-full text-sm font-medium bg-slate-100 text-slate-600"
+                          th:text="${tech}">Tech</span>
             </div>
-
-            <!-- Meta -->
-            <div class="bg-panel border border-border p-6 animate-fade-up-3">
-                <p class="font-mono text-xs text-muted uppercase tracking-widest mb-5">// Meta Info</p>
-                <div class="space-y-4">
-                    <div>
-                        <p class="font-mono text-[10px] text-muted uppercase tracking-widest">Mata Kuliah</p>
-                        <p class="font-mono text-sm text-cream font-bold mt-0.5">WEB-2</p>
-                    </div>
-                    <div>
-                        <p class="font-mono text-[10px] text-muted uppercase tracking-widest">Topik</p>
-                    </div>
-                    <div>
-                        <p class="font-mono text-[10px] text-muted uppercase tracking-widest">Framework</p>
-                        <p class="font-mono text-sm text-gold font-bold mt-0.5">Spring Boot 4</p>
-                    </div>
-                    <div>
-                        <p class="font-mono text-[10px] text-muted uppercase tracking-widest">UI Library</p>
-                        <p class="font-mono text-sm text-gold font-bold mt-0.5">Tailwind CSS v3</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
-
 </main>
 
 <div th:replace="~{fragments/layout :: footer}"></div>
