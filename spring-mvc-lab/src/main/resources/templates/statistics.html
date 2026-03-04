@@ -1,125 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title th:text="${title}">Statistik</title>
-    <th:block th:replace="~{fragments/layout :: head-common}"></th:block>
-</head>
-<body class="bg-ink text-cream font-sans antialiased">
+<head th:replace="~{fragments/layout :: head-content}"></head>
+<body class="bg-slate-50 flex flex-col min-h-screen">
 
 <div th:replace="~{fragments/layout :: navbar}"></div>
 
-<main class="max-w-7xl mx-auto px-6 py-12">
+<main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    <h1 class="text-2xl font-bold text-slate-800 mb-6">Statistik Toko</h1>
 
-    <!-- PAGE HEADER -->
-    <div class="border-b border-border pb-8 mb-12 animate-fade-up">
-        <p class="font-mono text-xs text-gold font-bold tracking-[.2em] uppercase mb-2">// Dashboard</p>
-        <h1 class="font-serif font-black text-cream" style="font-size:clamp(2rem,5vw,3.5rem)"
-            th:text="${title}">Statistik Toko</h1>
-    </div>
-
-    <!-- TOP STAT CARDS -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-1 mb-8 animate-fade-up-2">
-
-        <div class="bg-panel border border-gold/40 border-t-2 border-t-gold p-7">
-            <p class="font-mono text-xs text-muted uppercase tracking-widest mb-3">Total Produk</p>
-            <p class="gold-text font-serif font-black text-5xl" th:text="${totalProducts}">0</p>
-            <p class="font-mono text-xs text-muted/60 mt-2">items</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-slate-500">Total Produk</p>
+                <p class="text-3xl font-bold text-slate-800 mt-1" th:text="${totalProducts}">0</p>
+            </div>
+            <div class="p-3 bg-blue-50 rounded-lg">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+            </div>
         </div>
 
-        <div class="bg-panel border border-blue-500/30 border-t-2 border-t-blue-500 p-7">
-            <p class="font-mono text-xs text-muted uppercase tracking-widest mb-3">Rata-rata Harga</p>
-            <p class="font-serif font-black text-3xl text-blue-400"
-               th:text="'Rp ' + ${#numbers.formatDecimal(averagePrice, 0, 'COMMA', 0, 'POINT')}">Rp 0</p>
-            <p class="font-mono text-xs text-muted/60 mt-2">per produk</p>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-slate-500">Rata-rata Harga</p>
+                <p class="text-3xl font-bold text-emerald-600 mt-1" th:text="'Rp ' + ${#numbers.formatDecimal(averagePrice, 0, 'COMMA', 0, 'POINT')}">Rp 0</p>
+            </div>
+            <div class="p-3 bg-emerald-50 rounded-lg">
+                <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
         </div>
 
-        <div class="bg-panel border border-red-500/30 border-t-2 border-t-red-500 p-7">
-            <p class="font-mono text-xs text-muted uppercase tracking-widest mb-3">Stok Menipis</p>
-            <p class="font-serif font-black text-5xl text-red-400" th:text="${lowStockCount}">0</p>
-            <p class="font-mono text-xs text-muted/60 mt-2">&lt; 20 unit</p>
-        </div>
-
-        <div class="bg-panel border border-border border-t-2 border-t-green-500 p-7">
-            <p class="font-mono text-xs text-muted uppercase tracking-widest mb-3">Total Kategori</p>
-            <p class="font-serif font-black text-5xl text-green-400"
-               th:text="${categoryStats.size()}">0</p>
-            <p class="font-mono text-xs text-muted/60 mt-2">jenis produk</p>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-slate-500">Stok Menipis</p>
+                <p class="text-3xl font-bold text-amber-500 mt-1" th:text="${lowStockCount}">0</p>
+            </div>
+            <div class="p-3 bg-amber-50 rounded-lg">
+                <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
         </div>
     </div>
 
-    <!-- TWO COLUMN: Price Extremes + Category Distribution -->
-    <div class="grid md:grid-cols-2 gap-5 mb-5">
-
-        <!-- Extreme Prices -->
-        <div class="border border-border animate-fade-up-2">
-            <div class="bg-panel px-6 py-3 border-b border-border">
-                <p class="font-mono text-xs text-muted uppercase tracking-widest">// Harga Ekstrem</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 bg-slate-50">
+                <h3 class="font-semibold text-slate-800">Distribusi Kategori</h3>
             </div>
-
-            <!-- Termurah -->
-            <div class="p-7 border-b border-border">
-                <p class="font-mono text-xs font-bold text-green-400 uppercase tracking-widest mb-3">↓ Termurah</p>
-                <p class="font-serif font-bold text-xl text-cream mb-1" th:text="${cheapest.name}">Nama</p>
-                <p class="font-serif font-black text-3xl text-green-400"
-                   th:text="'Rp ' + ${#numbers.formatDecimal(cheapest.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</p>
-                <a th:href="@{/products/{id}(id=${cheapest.id})}"
-                   class="inline-block mt-3 font-mono text-xs text-muted hover:text-gold transition-colors uppercase tracking-widest">
-                    Lihat produk →
-                </a>
-            </div>
-
-            <!-- Termahal -->
-            <div class="p-7">
-                <p class="font-mono text-xs font-bold text-red-400 uppercase tracking-widest mb-3">↑ Termahal</p>
-                <p class="font-serif font-bold text-xl text-cream mb-1" th:text="${mostExpensive.name}">Nama</p>
-                <p class="font-serif font-black text-3xl text-red-400"
-                   th:text="'Rp ' + ${#numbers.formatDecimal(mostExpensive.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</p>
-                <a th:href="@{/products/{id}(id=${mostExpensive.id})}"
-                   class="inline-block mt-3 font-mono text-xs text-muted hover:text-gold transition-colors uppercase tracking-widest">
-                    Lihat produk →
-                </a>
+            <div class="p-0">
+                <ul class="divide-y divide-slate-100">
+                    <li class="flex justify-between items-center px-6 py-4 hover:bg-slate-50 transition"
+                        th:each="entry : ${categoryStats}">
+                        <span class="text-slate-700 font-medium" th:text="${entry.key}">Kategori</span>
+                        <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-bold" th:text="${entry.value}">0</span>
+                    </li>
+                </ul>
             </div>
         </div>
 
-        <!-- Category Distribution -->
-        <div class="border border-border animate-fade-up-3">
-            <div class="bg-panel px-6 py-3 border-b border-border">
-                <p class="font-mono text-xs text-muted uppercase tracking-widest">// Distribusi Kategori</p>
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 bg-slate-50">
+                <h3 class="font-semibold text-slate-800">Analisis Harga</h3>
             </div>
-
-            <div th:each="entry, s : ${categoryStats}"
-                 class="px-7 py-6"
-                 th:classappend="${!s.last} ? 'border-b border-border' : ''">
-                <div class="flex justify-between items-center mb-3">
-          <span class="font-serif font-bold text-cream flex items-center gap-2">
-            <span th:text="${entry.key == 'Elektronik'} ? '⚡' : (${entry.key == 'Buku'} ? '📖' : '☕')">⚡</span>
-            <span th:text="${entry.key}">Kategori</span>
-          </span>
-                    <span class="font-mono text-xs text-gold font-bold">
-            <span th:text="${entry.value}">0</span> produk
-          </span>
-                </div>
-                <!-- Progress bar -->
-                <div class="h-1.5 bg-border rounded-full overflow-hidden">
-                    <div class="h-full rounded-full transition-all duration-700"
-                         th:classappend="${entry.key == 'Elektronik'} ? 'bg-gradient-to-r from-gold to-gold-dark' :
-                               (${entry.key == 'Buku'} ? 'bg-gradient-to-r from-blue-500 to-blue-700' :
-                               'bg-gradient-to-r from-green-500 to-green-700')"
-                         th:style="'width:' + (${entry.value} * 100 / ${totalProducts}) + '%'">
+            <div class="p-6 space-y-6">
+                <div>
+                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Termurah</p>
+                    <div class="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border border-emerald-100">
+                        <span class="font-medium text-emerald-900" th:text="${cheapest.name}">Name</span>
+                        <span class="font-bold text-emerald-700" th:text="'Rp ' + ${#numbers.formatDecimal(cheapest.price, 0, 'COMMA', 0, 'POINT')}">0</span>
                     </div>
                 </div>
-                <p class="font-mono text-xs text-muted mt-1.5"
-                   th:text="${#numbers.formatDecimal(entry.value * 100.0 / totalProducts, 0, 'COMMA', 0, 'POINT')} + '% dari total'">
-                    0%
-                </p>
+                <div>
+                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Termahal</p>
+                    <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100">
+                        <span class="font-medium text-blue-900" th:text="${mostExpensive.name}">Name</span>
+                        <span class="font-bold text-blue-700" th:text="'Rp ' + ${#numbers.formatDecimal(mostExpensive.price, 0, 'COMMA', 0, 'POINT')}">0</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <a th:href="@{/products}"
-       class="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest px-5 py-2.5 border border-border text-muted hover:border-gold hover:text-gold transition-colors animate-fade-up-4">
-        ← Kembali ke Katalog
-    </a>
 
 </main>
 
